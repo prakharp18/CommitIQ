@@ -40,6 +40,7 @@ const Sidebar = () => {
               <Link
                 key={item.label}
                 to={item.path}
+                data-clickable="true"
                 className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors group ${
                   location.pathname === item.path
                     ? 'bg-white text-black' 
@@ -74,6 +75,7 @@ const Sidebar = () => {
             {generalItems.map((item) => (
               <button
                 key={item.label}
+                data-clickable="true"
                 onClick={(e) => {
                   if (item.label === 'Logout') {
                     e.preventDefault()

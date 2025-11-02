@@ -66,18 +66,21 @@ const Calendar = () => {
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => navigateMonth(-1)}
+                  data-clickable="true"
                   className="p-2 hover:bg-neutral-800 rounded-lg"
                 >
                   <ChevronLeft className="h-5 w-5 text-gray-400" />
                 </button>
                 <button
                   onClick={() => setCurrentDate(new Date())}
+                  data-clickable="true"
                   className="px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 rounded-lg"
                 >
                   Today
                 </button>
                 <button
                   onClick={() => navigateMonth(1)}
+                  data-clickable="true"
                   className="p-2 hover:bg-neutral-800 rounded-lg"
                 >
                   <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -101,6 +104,7 @@ const Calendar = () => {
                 {days.map((day, index) => (
                   <div
                     key={index}
+                    data-clickable="true"
                     className={`
                       aspect-square p-2 text-center text-sm cursor-pointer rounded-lg transition-colors
                       ${isCurrentMonth(day) 

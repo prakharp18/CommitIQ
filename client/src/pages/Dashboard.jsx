@@ -7,6 +7,7 @@ import TodoBlock from '../components/TodoBlock'
 import CircularProgress from '../components/CircularProgress'
 import LanguageChart from '../components/LanguageChart'
 import CodeQualityTooltip from '../components/CodeQualityTooltip'
+import MagicBento from '../components/MagicBento'
 
 const Dashboard = () => {
   const { user } = useAuth()
@@ -123,7 +124,35 @@ const Dashboard = () => {
       }))
       .sort((a, b) => b.value - a.value)
 
+    // Show only top 3 languages, group rest as "Others"
+    if (languageData.length > 3) {
+      const top3 = languageData.slice(0, 3)
+      const others = languageData.slice(3)
+      const othersValue = others.reduce((sum, lang) => sum + lang.value, 0)
+      
+      if (othersValue > 0) {
+        top3.push({
+          name: 'Others',
+          value: othersValue,
+          color: '#6b7280'
+        })
+      }
+      
+      return top3
+    }
+
     return languageData
+  }
+
+  const getUniqueLanguageCount = () => {
+    if (!data.repositories || data.repositories.length === 0) return 0
+    const uniqueLanguages = new Set()
+    data.repositories.forEach(repo => {
+      if (repo.language) {
+        uniqueLanguages.add(repo.language)
+      }
+    })
+    return uniqueLanguages.size
   }
 
   const calculateCodeQuality = () => {
@@ -154,6 +183,7 @@ const Dashboard = () => {
 
   const weeklyActivity = generateWeeklyActivity()
   const languageDistribution = getLanguageDistribution()
+  const uniqueLanguageCount = getUniqueLanguageCount()
   const codeQualityScore = calculateCodeQuality()
   const recentRepos = data.repositories.slice(0, 8)
 
@@ -173,6 +203,7 @@ const Dashboard = () => {
               <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
+                data-clickable="true"
                 className="p-2 text-gray-400 hover:text-white hover:bg-neutral-800 rounded-lg transition-colors disabled:opacity-50"
                 title={`Refresh data - ${getRefreshTimeText()}`}
               >
@@ -225,7 +256,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-12 gap-6 max-w-7xl">
             
             {/* Hero Repository Card */}
-            <div className="col-span-12 md:col-span-4 bg-white text-black p-6 rounded-2xl relative overflow-hidden h-[160px] shadow-lg hover:shadow-xl transition-shadow">
+            <MagicBento className="col-span-12 md:col-span-4 bg-white text-black p-6 h-[160px] shadow-lg hover:shadow-xl transition-shadow">
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-sm text-gray-600">Total Repositories</h3>
@@ -239,10 +270,10 @@ const Dashboard = () => {
               </div>
               <div className="absolute bottom-0 right-0 w-24 h-24 bg-gray-200 rounded-full opacity-20 transform translate-x-8 translate-y-8"></div>
               <div className="absolute top-0 right-0 w-16 h-16 bg-gray-200 rounded-full opacity-10 transform -translate-y-4 translate-x-4"></div>
-            </div>
+            </MagicBento>
 
             {/* Primary Stats Row */}
-            <div className="col-span-6 md:col-span-2 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[160px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-2 bg-neutral-900 p-5 h-[160px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex flex-col h-full justify-between">
                 <div className="flex items-center justify-between">
                   <div className="p-3 bg-neutral-800 rounded-xl">
@@ -257,9 +288,9 @@ const Dashboard = () => {
                   <p className="text-3xl font-bold text-white">{stats.publicRepos}</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
-            <div className="col-span-6 md:col-span-2 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[160px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-2 bg-neutral-900 p-5 h-[160px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex flex-col h-full justify-between">
                 <div className="flex items-center justify-between">
                   <div className="p-3 bg-neutral-800 rounded-xl">
@@ -274,9 +305,9 @@ const Dashboard = () => {
                   <p className="text-3xl font-bold text-white">{stats.privateRepos}</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
-            <div className="col-span-6 md:col-span-2 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[160px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-2 bg-neutral-900 p-5 h-[160px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex flex-col h-full justify-between">
                 <div className="flex items-center justify-between">
                   <div className="p-3 bg-neutral-800 rounded-xl">
@@ -291,9 +322,9 @@ const Dashboard = () => {
                   <p className="text-3xl font-bold text-white">{stats.totalStars}</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
-            <div className="col-span-6 md:col-span-2 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[160px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-2 bg-neutral-900 p-5 h-[160px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex flex-col h-full justify-between">
                 <div className="flex items-center justify-between">
                   <div className="p-3 bg-neutral-800 rounded-xl">
@@ -308,10 +339,10 @@ const Dashboard = () => {
                   <p className="text-3xl font-bold text-white">{actualCommitCount}</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
             {/* Secondary Stats Row */}
-            <div className="col-span-6 md:col-span-3 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-3 bg-neutral-900 p-5 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4 h-full">
                 <div className="p-3 bg-neutral-800 rounded-xl">
                   <GitBranch className="h-6 w-6 text-indigo-500" />
@@ -322,9 +353,9 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-500 mt-1">Repository forks</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
-            <div className="col-span-6 md:col-span-3 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-3 bg-neutral-900 p-5 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4 h-full">
                 <div className="p-3 bg-neutral-800 rounded-xl">
                   <Eye className="h-6 w-6 text-white" />
@@ -335,10 +366,10 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-500 mt-1">Repository watchers</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
             {/* Contribution Streak Cards */}
-            <div className="col-span-6 md:col-span-3 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-3 bg-neutral-900 p-5 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4 h-full">
                 <div className="p-3 bg-neutral-800 rounded-xl">
                   <TrendingUp className="h-6 w-6 text-green-500" />
@@ -349,9 +380,9 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-500 mt-1">Active coding streak</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
-            <div className="col-span-6 md:col-span-3 bg-neutral-900 p-5 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-6 md:col-span-3 bg-neutral-900 p-5 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4 h-full">
                 <div className="p-3 bg-neutral-800 rounded-xl">
                   <Star className="h-6 w-6 text-orange-500" />
@@ -362,35 +393,35 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-500 mt-1">Best coding streak</p>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
             {/* Premium Widget Section */}
-            <div className="col-span-12 md:col-span-4 bg-neutral-900 p-6 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-12 md:col-span-4 bg-neutral-900 p-6 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <TodoBlock />
-            </div>
+            </MagicBento>
 
-            <div className="col-span-12 md:col-span-4 bg-neutral-900 p-6 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center h-full">
+            <div className="col-span-12 md:col-span-4 bg-neutral-900 p-6 h-[140px] shadow-sm hover:shadow-md transition-shadow rounded-lg border border-neutral-800">
+              <div className="h-full flex items-start">
                 {/* Left side - Chart */}
-                <div className="flex items-center justify-center w-24 h-24 mr-4">
+                <div className="flex items-center justify-center w-16 h-16 mr-4 flex-shrink-0">
                   <CircularProgress value={codeQualityScore} size="small" />
                 </div>
                 
-                {/* Right side - Details with scrollbar */}
-                <div className="flex-1 h-full flex flex-col">
+                {/* Right side - Details */}
+                <div className="flex-1 h-full flex flex-col min-w-0">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-bold text-white">Code Quality</h3>
                     <CodeQualityTooltip score={codeQualityScore} stats={stats} />
                   </div>
                   
-                  <div className="flex-1 overflow-y-auto pr-2">
-                    <div className="space-y-2">
+                  <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                    <div className="space-y-1.5 pr-2">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-medium text-gray-400">Score</span>
                         <span className="text-sm font-bold text-white">{codeQualityScore}/100</span>
                       </div>
                       
-                      <div className="space-y-1 text-xs">
+                      <div className="space-y-0.5 text-xs">
                         <div className="flex justify-between">
                           <span className="text-gray-500">• Engagement</span>
                           <span className="text-gray-400">40%</span>
@@ -409,12 +440,12 @@ const Dashboard = () => {
                         </div>
                       </div>
                       
-                      <div className="pt-2 border-t border-neutral-800">
-                        <div className="text-xs text-gray-500">
-                          <div className="font-medium mb-1">Key Metrics:</div>
+                      <div className="pt-1 border-t border-neutral-800">
+                        <div className="text-xs text-gray-500 space-y-0.5">
+                          <div className="font-medium">Key Metrics:</div>
                           <div>Stars/Repo: {stats.totalRepos > 0 ? (stats.totalStars / stats.totalRepos).toFixed(1) : '0'}</div>
                           <div>Commits: {actualCommitCount}</div>
-                          <div>Languages: {stats.languages?.length || 0}</div>
+                          <div>Languages: {uniqueLanguageCount}</div>
                         </div>
                       </div>
                     </div>
@@ -424,7 +455,7 @@ const Dashboard = () => {
             </div>
 
             {/* Community Stats Card */}
-            <div className="col-span-12 md:col-span-4 bg-neutral-900 p-6 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-12 md:col-span-4 bg-neutral-900 p-6 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <div className="h-full flex flex-col">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-bold text-white">Community</h3>
@@ -452,9 +483,9 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
-            <div className="col-span-12 md:col-span-4 bg-neutral-900 p-6 rounded-2xl border border-neutral-800 h-[140px] shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-12 md:col-span-4 bg-neutral-900 p-6 h-[140px] shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center h-full">
                 {/* Left side - Mini Chart */}
                 <div className="w-20 h-20 mr-4 flex-shrink-0">
@@ -463,7 +494,7 @@ const Dashboard = () => {
                 
                 {/* Right side - Language List with scrollbar */}
                 <div className="flex-1 h-full flex flex-col">
-                  <h3 className="text-sm font-bold text-white mb-2">Languages ({languageDistribution.length})</h3>
+                  <h3 className="text-sm font-bold text-white mb-2">Languages ({uniqueLanguageCount})</h3>
                   
                   <div className="flex-1 overflow-y-auto pr-2">
                     <div className="space-y-1">
@@ -480,10 +511,10 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </MagicBento>
 
             {/* Enhanced Recent Repositories Section */}
-            <div className="col-span-12 bg-neutral-900 p-6 rounded-2xl border border-neutral-800 shadow-sm hover:shadow-md transition-shadow">
+            <MagicBento className="col-span-12 bg-neutral-900 p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="mb-4">
                 <h3 className="text-lg font-bold text-white">Recent Repositories</h3>
                 <p className="text-sm text-gray-400 mt-1">Your latest GitHub projects ({recentRepos.length} showing)</p>
@@ -492,7 +523,7 @@ const Dashboard = () => {
                 <div className="overflow-y-auto pr-2" style={{ maxHeight: '300px' }}>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {recentRepos.map((repo, index) => (
-                      <div key={repo.id || index} className="bg-neutral-800 p-4 rounded-xl hover:bg-neutral-700 transition-colors border border-neutral-700 flex flex-col">
+                      <MagicBento key={repo.id || index} className="bg-neutral-800 p-4 hover:bg-neutral-700 transition-colors flex flex-col">
                         <div className="flex-1 mb-3">
                           <h4 className="font-bold text-white text-sm mb-2">{repo.name}</h4>
                           <p className="text-xs text-gray-400 line-clamp-3 min-h-[3rem]">
@@ -532,7 +563,7 @@ const Dashboard = () => {
                             {repo.private ? 'Private' : 'Public'}
                           </span>
                         </div>
-                      </div>
+                      </MagicBento>
                     ))}
                   </div>
                 </div>
@@ -541,7 +572,7 @@ const Dashboard = () => {
                   <p>No repositories found</p>
                 </div>
               )}
-            </div>
+            </MagicBento>
 
           </div>
         </div>

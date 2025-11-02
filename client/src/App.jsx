@@ -6,11 +6,13 @@ import Analytics from './pages/Analytics'
 import PRInsights from './pages/PRInsights'
 import Calendar from './pages/Calendar'
 import ProtectedRoute from './components/ProtectedRoute'
+import TargetCursor from './components/TargetCursor'
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <TargetCursor />
         <div className="min-h-screen bg-gray-50">
           <Routes>
             <Route path="/" element={<Landing />} />
