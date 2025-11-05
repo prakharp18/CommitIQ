@@ -17,8 +17,10 @@ const TargetCursor = () => {
 
     if (!cursor || !crosshair || !centerDot || !outerRing) return
 
-    // Hide default cursor globally
+    cursor.style.display = 'block'
+
     const style = document.createElement('style')
+    style.id = 'target-cursor-style'
     style.innerHTML = `
       *, *::before, *::after {
         cursor: none !important;
@@ -27,6 +29,11 @@ const TargetCursor = () => {
         cursor: none !important;
       }
     `
+    
+    const existingStyle = document.getElementById('target-cursor-style')
+    if (existingStyle) {
+      existingStyle.remove()
+    }
     document.head.appendChild(style)
 
     // Initial setup
@@ -211,7 +218,7 @@ const TargetCursor = () => {
     document.addEventListener('mouseleave', handleMouseLeave)
     document.addEventListener('mouseenter', handleMouseEnter)
 
-    // Cleanup
+    
     return () => {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseover', handleMouseOver)
@@ -221,7 +228,12 @@ const TargetCursor = () => {
       document.removeEventListener('mouseenter', handleMouseEnter)
       
       idleRotation.kill()
-      document.head.removeChild(style)
+      
+      // Remove custom cursor style
+      const existingStyle = document.getElementById('target-cursor-style')
+      if (existingStyle) {
+        existingStyle.remove()
+      }
     }
   }, [isHovering, isClicking])
 

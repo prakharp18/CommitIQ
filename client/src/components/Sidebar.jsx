@@ -1,4 +1,4 @@
-import { BarChart3, Home, Calendar, TrendingUp, Users, Settings, HelpCircle, LogOut } from 'lucide-react'
+import { BarChart3, Calendar, TrendingUp, Users, LogOut } from 'lucide-react'
 import { useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
@@ -14,13 +14,11 @@ const Sidebar = () => {
   ]
 
   const generalItems = [
-    { icon: Settings, label: 'Settings', path: '/settings' },
-    { icon: HelpCircle, label: 'Help', path: '/help' },
     { icon: LogOut, label: 'Logout', path: '/logout' }
   ]
 
   return (
-    <div className="w-64 bg-neutral-900 h-screen flex flex-col border-r border-neutral-800 fixed left-0 top-0 bottom-0">
+    <div className="sidebar w-64 bg-neutral-900 h-screen flex flex-col border-r border-neutral-800 fixed left-0 top-0 bottom-0 z-40">
       {/* Header */}
       <div className="p-6 border-b border-neutral-800">
         <div className="flex items-center space-x-2">
@@ -77,10 +75,8 @@ const Sidebar = () => {
                 key={item.label}
                 data-clickable="true"
                 onClick={(e) => {
-                  if (item.label === 'Logout') {
-                    e.preventDefault()
-                    logout()
-                  }
+                  e.preventDefault()
+                  logout()
                 }}
                 className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-neutral-800 hover:text-white transition-colors group text-left"
               >

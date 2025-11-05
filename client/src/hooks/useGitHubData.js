@@ -41,18 +41,6 @@ export const useGitHubData = () => {
         githubService.getContributions()
       ])
 
-      // Debug logging to see what data we're getting
-      console.log('GitHub Data Debug:', {
-        reposCount: repos.length,
-        statsData,
-        firstFewRepos: repos.slice(0, 3).map(r => ({
-          name: r.name,
-          stars: r.stargazers_count,
-          forks: r.forks_count,
-          private: r.private
-        }))
-      })
-
       // Use more accurate commit count from contributions if available
       const totalCommits = contributionsData?.totalContributions || commits.length
 

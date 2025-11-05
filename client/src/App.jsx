@@ -15,32 +15,31 @@ function App() {
         <TargetCursor />
         <div className="min-h-screen bg-gray-50">
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/analytics" element={
-              <ProtectedRoute>
-                <Analytics />
-              </ProtectedRoute>
-            } />
-            <Route path="/pr-insights" element={
-              <ProtectedRoute>
-                <PRInsights />
-              </ProtectedRoute>
-            } />
-            <Route path="/calendar" element={
-              <ProtectedRoute>
-                <Calendar />
-              </ProtectedRoute>
-            } />
+              <Route path="/" element={<Landing />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/analytics" element={
+                <ProtectedRoute>
+                  <Analytics />
+                </ProtectedRoute>
+              } />
+              <Route path="/pr-insights" element={
+                <ProtectedRoute>
+                  <PRInsights />
+                </ProtectedRoute>
+              } />
+              <Route path="/calendar" element={
+                <ProtectedRoute>
+                  <Calendar />
+                </ProtectedRoute>
+              } />
           </Routes>
         </div>
       </Router>
     </AuthProvider>
   )
 }
-
 export default App

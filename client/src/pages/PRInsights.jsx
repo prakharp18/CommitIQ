@@ -1,4 +1,4 @@
-import { GitPullRequest } from 'lucide-react'
+import { Users, GitPullRequest } from 'lucide-react'
 import Sidebar from '../components/Sidebar'
 
 const PRInsights = () => {
